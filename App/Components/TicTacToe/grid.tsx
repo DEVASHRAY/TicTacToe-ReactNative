@@ -4,7 +4,13 @@ import O from '../../assests/O.png';
 
 import {StyleSheet, Text, View, Image} from 'react-native';
 
-const Grid = ({specificStyle, gridValue: move}) => {
+interface Props {
+  specificStyle: {};
+  gridValue: string;
+  
+}
+
+const Grid: React.FC<Props> = ({specificStyle, gridValue: move}) => {
   const renderMoveIcon = () => {
     if (move === 'X') {
       return <Image source={X} style={styles.movesIcon} />;

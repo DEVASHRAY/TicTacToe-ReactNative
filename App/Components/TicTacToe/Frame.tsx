@@ -3,13 +3,26 @@ import Grid from './grid';
 
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const Frame = ({
+interface Props {
+  grid1: {};
+  grid2: {};
+  grid3: {};
+  onGridPress: (row: number, col: number) => void;
+  positions: {
+    grid1: [number, number];
+    grid2: [number, number];
+    grid3: [number, number];
+  };
+  renderMove: (row: number, col: number) => string;
+}
+
+const Frame: React.FC<Props> = ({
   grid1,
   grid2,
   grid3,
   renderMove,
   positions,
-  onGridPress = {onGridPress},
+  onGridPress,
 }) => {
   return (
     <>

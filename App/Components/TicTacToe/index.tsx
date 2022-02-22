@@ -12,20 +12,20 @@ import {
 } from 'react-native';
 import Frame from './Frame';
 
-const TicTacToe = () => {
+const TicTacToe: React.FC = () => {
   /*
     1 => player 1 and X
    -1 => player 2 and O
     0 => Empty Grid
     */
 
-  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [currentPlayer, setCurrentPlayer] = useState<number>(1);
   const [gameState, setGameState] = useState([
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0],
   ]);
-  const [winner, setWinner] = useState('');
+  const [winner, setWinner] = useState<number | string>('');
 
   useEffect(() => {
     Reset();
@@ -40,7 +40,7 @@ const TicTacToe = () => {
     setWinner('');
   };
 
-  const renderMove = (row, col) => {
+  const renderMove = (row: number, col: number): string => {
     let value = gameState[row][col];
     switch (value) {
       case 1:
@@ -52,7 +52,7 @@ const TicTacToe = () => {
     }
   };
 
-  const onGridPress = (row, col) => {
+  const onGridPress = (row: number, col: number) => {
     if (gameState[row][col] !== 0) {
       return;
     }
@@ -66,15 +66,15 @@ const TicTacToe = () => {
     setCurrentPlayer(prev => (prev === 1 ? -1 : 1));
     let winner = getWinner();
     if (winner === 1) {
-      alert('player 1 has won');
+      Alert.alert('player 1 has won');
       setWinner(1);
       setCurrentPlayer(1);
-      // Reset();
+      Reset();
     } else if (winner === -1) {
-      alert('player 2 has won');
+      Alert.alert('player 2 has won');
       setWinner('2');
       setCurrentPlayer(-1);
-      // Reset();
+      Reset();
     }
   };
 
@@ -117,6 +117,7 @@ const TicTacToe = () => {
 
       //No winners
     }
+
     return 0;
   };
 
