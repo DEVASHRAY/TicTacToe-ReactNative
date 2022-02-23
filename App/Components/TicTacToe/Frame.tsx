@@ -14,6 +14,7 @@ interface Props {
     grid3: [number, number];
   };
   renderMove: (row: number, col: number) => string;
+  winner: boolean;
 }
 
 const Frame: React.FC<Props> = ({
@@ -23,11 +24,14 @@ const Frame: React.FC<Props> = ({
   renderMove,
   positions,
   onGridPress,
+  winner,
 }) => {
+  
   return (
     <>
       <View style={styles.frame}>
         <TouchableOpacity
+          disabled={winner}
           onPress={() => onGridPress(positions.grid1[0], positions.grid1[1])}>
           <Grid
             specificStyle={grid1}
@@ -36,6 +40,7 @@ const Frame: React.FC<Props> = ({
         </TouchableOpacity>
 
         <TouchableOpacity
+          disabled={winner}
           onPress={() => onGridPress(positions.grid2[0], positions.grid2[1])}>
           <Grid
             specificStyle={grid2}
@@ -44,6 +49,7 @@ const Frame: React.FC<Props> = ({
         </TouchableOpacity>
 
         <TouchableOpacity
+          disabled={winner}
           onPress={() => onGridPress(positions.grid3[0], positions.grid3[1])}>
           <Grid
             specificStyle={grid3}

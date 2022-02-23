@@ -25,7 +25,8 @@ const TicTacToe: React.FC = () => {
     [0, 0, 0],
     [0, 0, 0],
   ]);
-  const [winner, setWinner] = useState<number | string>('');
+  const [winner, setWinner] = useState<boolean>(false);
+  const [moves, setMoves] = useState<number>(0);
 
   useEffect(() => {
     Reset();
@@ -37,7 +38,8 @@ const TicTacToe: React.FC = () => {
       [0, 0, 0],
       [0, 0, 0],
     ]);
-    setWinner('');
+    setWinner(false);
+    setMoves(0);
   };
 
   const renderMove = (row: number, col: number): string => {
@@ -53,6 +55,7 @@ const TicTacToe: React.FC = () => {
   };
 
   const onGridPress = (row: number, col: number) => {
+    setMoves(prev => ++prev);
     if (gameState[row][col] !== 0) {
       return;
     }
@@ -64,17 +67,23 @@ const TicTacToe: React.FC = () => {
 
     //Change Current Player
     setCurrentPlayer(prev => (prev === 1 ? -1 : 1));
-    let winner = getWinner();
-    if (winner === 1) {
-      Alert.alert('player 1 has won');
-      setWinner(1);
+    let checkWinner = getWinner();
+    
+    console.log('WINNER', checkWinner);
+
+    if (checkWinner === 1) {
+      Alert.alert('X won', 'Click on New Game to restart');
+      setWinner(true);
       setCurrentPlayer(1);
-      Reset();
-    } else if (winner === -1) {
-      Alert.alert('player 2 has won');
-      setWinner('2');
+      // Reset();
+    } else if (checkWinner === -1) {
+      Alert.alert('O won', 'Click on New Game to restart');
+
+      setWinner(true);
       setCurrentPlayer(-1);
-      Reset();
+      // Reset();
+    } else if (moves === 8) {
+      Alert.alert('Match Drawn', 'Click on New Game to restart');
     }
   };
 
@@ -95,23 +104,29 @@ const TicTacToe: React.FC = () => {
       sum = gameState[0][i] + gameState[1][i] + gameState[2][i];
 
       if (sum === 3) {
+        console.log('WINNER ROW');
         return 1;
       } else if (sum === -3) {
+        console.log('WINNER ROW');
         return -1;
       }
 
       //check diagonals
       sum = gameState[0][0] + gameState[1][1] + gameState[2][2];
       if (sum === 3) {
+        console.log('WINNER COL');
         return 1;
       } else if (sum === -3) {
+        console.log('WINNER COL');
         return -1;
       }
 
-      sum = gameState[2][0] + gameState[1][1] + gameState[1][2];
+      sum = gameState[2][0] + gameState[1][1] + gameState[0][2];
       if (sum === 3) {
+        console.log('WINNER DIA');
         return 1;
       } else if (sum === -3) {
+        console.log('WINNER DIA');
         return -1;
       }
 
@@ -120,6 +135,8 @@ const TicTacToe: React.FC = () => {
 
     return 0;
   };
+
+  console.log(gameState);
 
   return (
     <>
@@ -137,6 +154,7 @@ const TicTacToe: React.FC = () => {
                 grid3: [0, 2],
               }}
               onGridPress={onGridPress}
+              winner={winner}
             />
             <Frame
               grid1={{borderLeftWidth: 0}}
@@ -149,6 +167,7 @@ const TicTacToe: React.FC = () => {
                 grid3: [1, 2],
               }}
               onGridPress={onGridPress}
+              winner={winner}
             />
             <Frame
               grid1={{borderLeftWidth: 0, borderBottomWidth: 0}}
@@ -161,6 +180,7 @@ const TicTacToe: React.FC = () => {
                 grid3: [2, 2],
               }}
               onGridPress={onGridPress}
+              winner={winner}
             />
           </View>
           <TouchableOpacity
